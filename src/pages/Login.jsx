@@ -4,13 +4,13 @@ import {Button, Form} from 'semantic-ui-react'
 import {useMutation} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { AuthContext } from '../context/auth';
+import { useAuthContext } from '../context/auth';
 
 import {useForm} from '../util/hooks';
 
 function Login(props) {
 
-    const context = useContext(AuthContext);
+    const context = useAuthContext();
 
     const [errors, setErrors] = useState({});
 

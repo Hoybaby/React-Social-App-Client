@@ -8,18 +8,24 @@ export const FETCH_POSTS_QUERY = gql`
             id 
             body 
             createdAt 
-            username 
-            likeCount
-            likes {
+            user {
                 username
-            }
-            commentCount
-            comments{
-                id 
-                username 
-                createdAt 
-                body
-            }
+            } 
+            # likeCount
+            # likes {
+            #     user {
+            #         username
+            #     }
+            # }
+            # commentCount
+            # comments{
+            #     id 
+            #     createdAt 
+            #     body
+            #     user {
+            #         username
+            #     }
+            # }
         }
     }
 `

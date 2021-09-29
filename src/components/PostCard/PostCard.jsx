@@ -7,16 +7,18 @@ import moment from 'moment';
 
 // import 'semantic-ui-css/semantic.min.css';
 
-import {AuthContext} from '../../context/auth'
+import {useAuthContext} from '../../context/auth'
 import LikeButton from '../LikeButton/LikeButton';
 import DeleteButton from '../DeleteButton/DeleteButton'
 import MyPopup from '../../util/MyPopup';
 
 function PostCard({ 
-    post: { body, createdAt, id, username, likeCount, commentCount, likes } 
+    post: { body, createdAt, id, user: userData, likeCount, commentCount, likes } 
 }) {
 
-    const {user} = useContext(AuthContext);
+    const {user} = useAuthContext();
+
+    console.log({user, userData})
 
     // const likePost =() => {
     //     console.log('Like Post')
@@ -31,16 +33,14 @@ function PostCard({
                         size='mini'
                         src='https://react.semantic-ui.com/images/avatar/large/molly.png'
                     />
-                    <Card.Header>{username}</Card.Header>
-                    <Card.Meta as={Link} to={`/posts/${id}`}>{moment(createdAt).fromNow(true)}</Card.Meta>
+                    <Card.Header>{userData.username}</Card.Header>
+                    <Card.Meta as={Link} to={`/posts/${id}`}>{Intl.DateTimeFormat('en-US').format(new Date(Number(createdAt)))}</Card.Meta>
                     <Card.Description>
                         {body}
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
-                    {/* buttons go here
-                    <button>Testing</button> */}
-                    <LikeButton post={{id, likes, likeCount}} user={user}/>
+                <LikeButton post={{id, likes, likeCount}} user={userData.username}/>
                 <MyPopup 
                     content="Comment on Post"
                 >
@@ -54,19 +54,17 @@ function PostCard({
                             </Label>
                         </Button>
                 </MyPopup>
-                
+                {userData && userData.username === user?.username ?
+                <DeleteButton postId={id}/> : null}
+                </Card.Content>
+                    {/* buttons go here
+                        
                 {/* so if we are logged in equals to the username of this poist, this is the owner, so we want to show a delete button */}
-                {user && user.username === username && 
-                    <DeleteButton postId={id}/>
-                // (
-                //     <Button as='div'  color="red" onClick={()=> console.log('Delete post') }>
-                //         <Icon style ={{margin: 0}} name="trash"/>
-                //     </Button>
-                // )
+                
     
                 
-                }
-                </Card.Content>
+                
+                
             </Card>
     
         </div>

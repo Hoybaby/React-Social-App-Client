@@ -9,7 +9,7 @@ import {setContext} from 'apollo-link-context';
 
 const httpLink = createHttpLink({
     // this is just pointing towards our graphql server which is localhost 5000
-    uri: 'http://localhost:5000'
+    uri: process.env.APOLLO_ENDPOINT || 'http://localhost:5000'
 })
 
 

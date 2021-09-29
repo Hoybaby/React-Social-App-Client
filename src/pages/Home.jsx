@@ -4,14 +4,14 @@ import { useQuery } from '@apollo/react-hooks';
 import {Grid, Transition} from 'semantic-ui-react';
 import PostCard from '../components/PostCard/PostCard'
 
-import {AuthContext} from '../context/auth';
+import {useAuthContext} from '../context/auth';
 import PostForm from '../components/PostForm/PostForm'
 import {FETCH_POSTS_QUERY} from '../util/graphql';
 
 function Home() {
 
 
-    const {user} =useContext(AuthContext)
+    const {user} = useAuthContext()
 
     // from useQuery we get, loading which is true and data. 
     const {

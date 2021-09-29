@@ -1,9 +1,9 @@
-import React, {useContext, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import gql from 'graphql-tag'
 import {useQuery, useMutation} from '@apollo/react-hooks'
 import { Button, Card, Grid, Image, Icon, Label, Form } from 'semantic-ui-react';
 import moment from 'moment'
-import { AuthContext } from '../context/auth';
+import { useAuthContext } from '../context/auth';
 // import { FETCH_POSTS_QUERY } from '../util/graphql';
 
 import LikeButton from '../components/LikeButton/LikeButton'
@@ -14,7 +14,7 @@ function SinglePost(props) {
 
     const postId = props.match.params.postId;
 
-    const {user} = useContext(AuthContext)
+    const {user} = useAuthContext();
     // to see if we are getting it properly
     console.log(postId);
 
