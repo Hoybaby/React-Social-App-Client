@@ -18,8 +18,6 @@ function PostCard({
 
     const {user} = useAuthContext();
 
-    console.log({user, userData})
-
     // const likePost =() => {
     //     console.log('Like Post')
     // }
@@ -57,14 +55,7 @@ function PostCard({
                 {userData && userData.username === user?.username ?
                 <DeleteButton postId={id}/> : null}
                 </Card.Content>
-                    {/* buttons go here
-                        
-                {/* so if we are logged in equals to the username of this poist, this is the owner, so we want to show a delete button */}
-                
-    
-                
-                
-                
+
             </Card>
     
         </div>

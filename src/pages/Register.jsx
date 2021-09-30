@@ -14,10 +14,11 @@ function Register(props) {
     const [errors, setErrors] = useState({});
 
     const {onChange, onSubmit, values} = useForm(registerUser, {
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+        // we changing to null because it easier to check.
+        username: null,
+        email: null,
+        password: null,
+        confirmPassword: null,
     })
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
@@ -28,14 +29,27 @@ function Register(props) {
         },
         onError(err) {
             // this will tasrget the errors I already establish in my server side code with GRAPHQL
-            console.log(err.graphQLErrors[0].extensions.errors)
-            setErrors(err.graphQLErrors[0].extensions.errors)
-        },
-        variables: values
+            console.log(err)
+            // setErrors(err.graphQLErrors[0].extensions.errors)
+        }
+
     })
 
-    function registerUser() {
-        addUser();
+    function registerUser(formValues) {
+        const formErrors = {};
+
+            // destructing to not declare later down the road
+            // 
+            Object.entries(formValues).forEach(([field, value]) => {
+                if (!value) formErrors[field] = `${field} is required`
+            })
+            // if there are errors and we set the erros then just return to show them
+        if (Object.values(formErrors).length) {
+            setErrors(formErrors);
+            return;
+        }
+
+        addUser({variables: {username: formValues.username, password: formValues.password, email: formValues.email}});
     }
 
     return (

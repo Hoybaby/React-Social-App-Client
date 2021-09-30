@@ -15,8 +15,8 @@ function Login(props) {
     const [errors, setErrors] = useState({});
 
     const { onChange, onSubmit, values} = useForm(loginUserCallback, {
-        username: '',
-        password: ''
+        username: null,
+        password: null
     })
 
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
@@ -28,14 +28,26 @@ function Login(props) {
         },
         onError(err) {
             // this will tasrget the errors I already establish in my server side code with GRAPHQL
-            console.log(err.graphQLErrors[0].extensions.errors)
-            setErrors(err.graphQLErrors[0].extensions.errors)
+            console.log(err)
+            // setErrors(err.graphQLErrors[0].extensions.errors)
         },
-        variables: values
     })
 
-    function loginUserCallback() {
-        loginUser();
+    function loginUserCallback(formValues) {
+        const formErrors = {};
+
+            // destructing to not declare later down the road
+            // 
+            Object.entries(formValues).forEach(([field, value]) => {
+                if (!value) formErrors[field] = `${field} is required`
+            })
+            // if there are errors and we set the erros then just return to show them
+        if (Object.values(formErrors).length) {
+            setErrors(formErrors);
+            return;
+        }
+
+        loginUser({variables: {username: formValues.username, password: formValues.password}});
     }
 
     return (
@@ -89,10 +101,12 @@ const LOGIN_USER = gql`
                 username: $username
                 password: $password
         ) {
-            id
-            email
-            username
-            createdAt
+            user {
+                id
+                email
+                username
+                createdAt
+            }
             token
         }
     }
